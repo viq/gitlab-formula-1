@@ -1,10 +1,10 @@
 include:
-  - postgresql
+  - postgres
   {% if grains['os_family'] == 'RedHat' %}
   - gitlab.repos
   {% endif %}
   - gitlab.packages
-  - redis
+  - redis.server
   - gitlab.postgresql
   - gitlab.user
   - gitlab.ruby
