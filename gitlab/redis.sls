@@ -5,7 +5,7 @@
 {% set redis_package = 'redis-server' %}
 {% set redis_service = 'redis-server' %}
 {% endif %}
-redis:
+gitlab-redis:
   pkg:
     - installed
     - name: {{ redis_package }}
