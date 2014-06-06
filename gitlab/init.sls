@@ -4,7 +4,7 @@ include:
   - gitlab.repos
   {% endif %}
   - gitlab.packages
-  - redis.server
+  - gitlab.redis
   - gitlab.postgresql
   - gitlab.user
   - gitlab.ruby
