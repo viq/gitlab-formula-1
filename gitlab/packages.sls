@@ -10,6 +10,7 @@ gitlab-deps:
       - binutils
       - bison
       - byacc
+      - ca-certificates
       - crontabs
       - cscope
       - ctags
@@ -72,6 +73,7 @@ gitlab-deps:
 {% elif grains['os_family'] == 'Debian' %}
     - pkgs:
       - build-essential
+      - ca-certificates
       - checkinstall
       - curl
       - libcurl4-openssl-dev
