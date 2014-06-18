@@ -9,9 +9,8 @@ Following original install docs ( https://gitlab.com/gitlab-org/gitlab-ce/blob/m
 * ruby 1.9.3 is enough for it to work, so I'm using system packages for that
 * Using PostgreSQL as currently recommended database, with support to use MySQL settable via pillar
 
-Currently tested only on Debian, further systems planned.
-
-Initial work done for CentOS but doesn't work there yet, heavily inspired by https://github.com/gitlabhq/gitlab-recipes/tree/master/install/centos
+Currently tested only on Debian and CentOS 6.5, supporting Postgresql and
+MySQL. further systems planned.
 
 There are some initial bits for supporting RVM, but it's not working yet.
 

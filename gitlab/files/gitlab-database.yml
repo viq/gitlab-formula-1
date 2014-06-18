@@ -1,50 +1,54 @@
+{% set db_engine = salt['pillar.get']('gitlab:db_engine', 'postgresql')  %}
+{% if db_engine == 'postgresql' %}
+{% set encoding = 'unicode' %}
+{% elif db_engine == 'mysql2' %}
+{% set encoding = 'utf8' %}
+{% endif %}
 #
 # PRODUCTION
 #
 production:
-  adapter: postgresql
-  encoding: unicode
+  adapter: {{ db_engine }}
+  encoding: {{ encoding }}
   database: {{ salt['pillar.get']('gitlab:db_name') }}
   pool: 10
   username: {{ salt['pillar.get']('gitlab:db_user') }}
   password: {{ salt['pillar.get']('gitlab:db_pass') }}
-  # host: localhost
-  # port: 5432 
-  # socket: /tmp/postgresql.sock
+  host: {{ salt['pillar.get']('gitlab:db_host') }}
+  {% if salt['pillar.get']('gitlab:db_remote', false) %}
+  port: {{ salt['pillar.get']('gitlab:db_port') }}
+  {%- endif %}
 
 #
 # Development specific
 #
 development:
-  adapter: postgresql
-  encoding: unicode
+  adapter: {{ db_engine}}
+  encoding: {{ encoding }}
   database: gitlabhq_development
   pool: 5
-  username: postgres
-  password:
-  # socket: /tmp/postgresql.sock
+  username: {{ salt['pillar.get']('gitlab:dev:db_user') }}
+  password: {{ salt['pillar.get']('gitlab:dev:db_pass') }}
 
 #
 # Staging specific
 #
 staging:
-  adapter: postgresql
-  encoding: unicode
+  adapter: {{ db_engine }}
+  encoding: {{ encoding }}
   database: gitlabhq_staging
   pool: 5
-  username: postgres
-  password:
-  # socket: /tmp/postgresql.sock
+  username: {{ salt['pillar.get']('gitlab:dev:db_user') }}
+  password: {{ salt['pillar.get']('gitlab:dev:db_pass') }}
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test: &test
-  adapter: postgresql
-  encoding: unicode
+  adapter: {{ db_engine }}
+  encoding: {{ encoding }}
   database: gitlabhq_test
   pool: 5
-  username: postgres
-  password:
-  # socket: /tmp/postgresql.sock
+  username: {{ salt['pillar.get']('gitlab:stg:db_user') }}
+  password: {{ salt['pillar.get']('gitlab:stg:db_pass') }}
 

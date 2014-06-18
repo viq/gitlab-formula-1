@@ -1,6 +1,8 @@
 include:
   - git
 
+{% set db_engine = salt['pillar.get']('gitlab:db_engine', 'postgresql')  %}
+
 gitlab-deps:
   pkg.installed:
 {% if grains['os_family'] == 'RedHat' %}
@@ -51,7 +53,11 @@ gitlab-deps:
       - patchutils
       - perl-Time-HiRes
       - pkgconfig
+      {% if db_engine == "postgresql" %}
       - postgresql-devel
+      {% elif db_engine == "mysql2" %}
+      - mysql-devel
+      {% endif %}
       - python-devel
       - rcs
       - readline
@@ -90,10 +96,13 @@ gitlab-deps:
       - openssh-server
       - python
       - python-docutils
-      - redis-server
+      - redis
       - zlib1g-dev
-      {% if salt['pillar.get']('gitlab:db_engine', 'postgresql') == 'postgresql' %}
+      {% if db_engine == "postgresql" %}
       - libpq-dev
+      {% if db_engine == "mysql2" %}
+      - libmysqlclient-dev
+      {% endif %}
       {% endif %}
 {% endif %}
 

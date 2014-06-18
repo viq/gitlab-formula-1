@@ -1,3 +1,5 @@
+{% set db_engine = salt['pillar.get']('gitlab:db_engine', 'postgresql')  %}
+
 include:
   - gitlab.ruby
 
@@ -93,12 +95,21 @@ gitlab-initialize:
     - cwd: /home/git/gitlab
     - name: echo yes | bundle exec rake gitlab:setup RAILS_ENV=production
     - shell: /bin/bash
+    {% if db_engine == "postgresql" %}
     - unless: psql -U {{ salt['pillar.get']('gitlab:db_user') }} {{ salt['pillar.get']('gitlab:db_name') }} -c 'select * from users;'
+    {% elif db_engine == "mysql2" %}
+    - unless: mysql --user={{ salt['pillar.get']('gitlab:db_user') }} {{ salt['pillar.get']('gitlab:db_name') }} -e 'select * from users;'
+    {% endif %}
+
     - watch:
       - git: gitlab-git
     - require:
       - cmd: gitlab-gems
+      {% if db_engine == "postgresql" %}
       - postgres_database: gitlab-db
+      {% elif db_engine == "mysql2" %}
+      - mysql_database: gitlab-db
+      {% endif %}
 
 # When code changes, trigger upgrade procedure
 # Based on https://gitlab.com/gitlab-org/gitlab-ce/blob/master/lib/gitlab/upgrader.rb
@@ -128,7 +139,11 @@ gitlab-migrate-db:
     - require:
       - cmd: gitlab-gems
       - cmd: gitlab-initialize
+      {% if db_engine == 'postgresql' %}
       - postgres_database: gitlab-db
+      {% elif db_engine == 'mysql2' %}
+      - mysql_database: gitlab-db
+      {% endif %}
 
 gitlab-recompile-assets:
   cmd.wait:
