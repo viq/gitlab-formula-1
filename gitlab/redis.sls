@@ -2,8 +2,8 @@
 {% set redis_package = 'redis-server' %}
 {% set redis_service = 'redis-server' %}
 {% elif grains['os_family'] == 'RedHat' %}
-{% set redis_package = 'redis-server' %}
-{% set redis_service = 'redis-server' %}
+{% set redis_package = 'redis' %}
+{% set redis_service = 'redis' %}
 {% endif %}
 gitlab-redis:
   pkg:
@@ -14,4 +14,4 @@ gitlab-redis:
     - running
     - enable: True
     - watch:
-      - pkg: redis
+      - pkg: gitlab-redis

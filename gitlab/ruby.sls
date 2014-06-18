@@ -28,5 +28,22 @@ gitlab-ruby:
       - ruby193-ruby
       - ruby193-ruby-devel
       - ruby193-rubygem-bundler
+
+/usr/bin/ruby:
+  file.symlink:
+    - target: /usr/bin/ruby193-ruby
+    - require:
+        - pkg: gitlab-ruby
+
+/usr/bin/bundle:
+  file.symlink:
+    - target: /opt/rh/ruby193/root/usr/bin/bundle
+    - require:
+        - pkg: gitlab-ruby
+
+/usr/lib64/libruby.so.1.9:
+  file.symlink:
+    - target: /opt/rh/ruby193/root/usr/lib64/libruby.so.1.9
+
   {% endif %}
 {% endif %}

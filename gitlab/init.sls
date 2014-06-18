@@ -10,7 +10,8 @@ include:
   - postgres
   - gitlab.postgresql
   {% elif db_engine == "mysql2" %}
-  - mysql
+  - mysql.server
+  - mysql.client
   - gitlab.mysql
   {% endif %}
   - gitlab.user

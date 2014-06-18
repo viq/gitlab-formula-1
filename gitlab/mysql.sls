@@ -6,9 +6,9 @@ include:
 
 gitlab-db:
   mysql_user.present:
-    - connection_name: {{ salt['pillar.get']('gitlab:db_user') }}
-    - connection_password: {{ salt['pillar.get']('gitlab:db_pass') }}
-    - connection_charset: utf8
+    - name: {{ salt['pillar.get']('gitlab:db_user') }}
+    - password: {{ salt['pillar.get']('gitlab:db_pass') }}
+    - charset: utf8
     - host: {{ salt['pillar.get']('gitlab:db_host') }}
     - require:
       - pkg: mysql

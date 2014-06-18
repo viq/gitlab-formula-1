@@ -55,7 +55,7 @@ gitlab-deps:
       - pkgconfig
       {% if db_engine == "postgresql" %}
       - postgresql-devel
-      {% db_engine == "mysql2" %}
+      {% elif db_engine == "mysql2" %}
       - mysql-devel
       {% endif %}
       - python-devel
@@ -96,11 +96,11 @@ gitlab-deps:
       - openssh-server
       - python
       - python-docutils
-      - redis-server
+      - redis
       - zlib1g-dev
       {% if db_engine == "postgresql" %}
       - libpq-dev
-      {% db_engine == "mysql2" %}
+      {% if db_engine == "mysql2" %}
       - libmysqlclient-dev
       {% endif %}
       {% endif %}

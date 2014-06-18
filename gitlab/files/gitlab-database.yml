@@ -1,8 +1,8 @@
 {% set db_engine = salt['pillar.get']('gitlab:db_engine', 'postgresql')  %}
 {% if db_engine == 'postgresql' %}
-{% set encoding == 'unicode' %}
+{% set encoding = 'unicode' %}
 {% elif db_engine == 'mysql2' %}
-{% set encoding == 'utf8' %}
+{% set encoding = 'utf8' %}
 {% endif %}
 #
 # PRODUCTION

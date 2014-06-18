@@ -105,7 +105,11 @@ gitlab-initialize:
       - git: gitlab-git
     - require:
       - cmd: gitlab-gems
+      {% if db_engine == "postgresql" %}
       - postgres_database: gitlab-db
+      {% elif db_engine == "mysql2" %}
+      - mysql_database: gitlab-db
+      {% endif %}
 
 # When code changes, trigger upgrade procedure
 # Based on https://gitlab.com/gitlab-org/gitlab-ce/blob/master/lib/gitlab/upgrader.rb
@@ -135,9 +139,9 @@ gitlab-migrate-db:
     - require:
       - cmd: gitlab-gems
       - cmd: gitlab-initialize
-      {% if salt['pillar.get']('gitlab:db_engine') == 'postgresql' %}
+      {% if db_engine == 'postgresql' %}
       - postgres_database: gitlab-db
-      {% elif salt['pillar.get']('gitlab:db_engine') == 'mysql2' %}
+      {% elif db_engine == 'mysql2' %}
       - mysql_database: gitlab-db
       {% endif %}
 
